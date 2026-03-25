@@ -1,0 +1,35 @@
+{
+  "name": "Hello Extensions",
+  "description": "Base Level Extension",
+  "version": "1.0",
+  "manifest_version": 3,
+  "host_permissions": [
+    "*://sistema.ssw.inf.br/*",
+    "https://api.sacflow.io/*",
+    "https://script.google.com/*",
+    "https://script.googleusercontent.com/*",
+    "https://*.ngrok-free.dev/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://sistema.ssw.inf.br/*"
+      ],
+      "js": [
+        "scripts/content.js"
+      ],
+      "all_frames": true,
+      "match_about_blank": true,
+      "world": "ISOLATED",
+      "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "scripts/background.js"
+  }
+}
