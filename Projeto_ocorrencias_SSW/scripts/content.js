@@ -19,7 +19,9 @@ const acoes = {
     },
 };
 
-//Construtores: Model dos dados do usuário.
+/**
+* @constructor Cria objeto com dados do usuário
+*/
 class DadosUsuario {
     constructor(nome, filial) {
         this.nome = nome;
@@ -27,7 +29,9 @@ class DadosUsuario {
     }
 }
 
-//Construtores: Model dos dados da ocorrência.
+/**
+ * @constructor Cria objeto com dados da ocorrência
+ */
 class DadosOcorrencia {
     constructor(codOcorrencia, dsOcorrencia, codCTRC, data, hora, usuario) {
         this.codOcorrencia = codOcorrencia;
@@ -39,11 +43,15 @@ class DadosOcorrencia {
     }
 }
 
+/**
+ * Classe de serviço para ações da aplicação 
+ * obs: Algumas ações ainda podem ser desaclopadas.
+ */
 class ServicoDOM {
     /**
-     * Faz a busca dos dados e inclue em seus respectivos atributos, criando assim o objeto completo.
+     * Faz a busca dos dados e inclui em seus respectivos atributos, criando assim o objeto completo.
      * @param {*} codOcorrencia Código da ocorrência analizada
-     * @param {*} dsOcorrencia Descrição drespectiva à ocorrência indicada
+     * @param {*} dsOcorrencia Descrição respectiva à ocorrência indicada
      * @returns 
      */
     buscarDadosOcorrencia(codOcorrencia, dsOcorrencia) {
@@ -70,7 +78,7 @@ class ServicoDOM {
 
     //
     /**
-     * realiza a busca da função correspondente ao númeroi da ocorrência.
+     * Realiza a busca da função correspondente ao número da ocorrência.
      * @param {*} numeroOcorrencia 
      * @param {*} acoes 
      */
@@ -98,7 +106,7 @@ class ServicoDOM {
     }
 
     /**
-     * Método que aplica uma mensagem diferente dependendo do parâmetro inserido. Possíveis parâmetros
+     * Método que aplica uma mensagem na interface do usuário. (diferente dependendo do parâmetro inserido).
      * @param {*} status Possíveis preenchimentos: pendente, autorizado, negado, sem-retorno
      */
     spamStatus(status) {
@@ -128,11 +136,9 @@ class ServicoDOM {
     }
 
     /**
-     *  Função de chamada de API
-     *  Realiza a chamada do backgroud para fazer a ação de chamar a API e capturar o retorno
-     * 
+     * Função de chamada de API. Realiza a chamada do backgroud para fazer a ação de chamar a API e verificar a situação do pedido.
      * @param {*} unicKey 
-     * @returns resposta da API
+     * @returns Resposta API
      */
 
     async getVerifique(unicKey) {
@@ -151,8 +157,7 @@ class ServicoDOM {
     }
 
     /**
-     * Recebe o resultado do "POST" ou "GET" trazendo o resultado da validação.
-     * Esses dados são trazidos apartir de uma requisição feita pelo "BackGround".
+     * Recebe o resultado do "POST" ou "GET" trazendo o resultado da validação. Esses dados são trazidos apartir de uma requisição feita pelo "BackGround".
      * @returns Booleano dependêndo do retorno da API
      */
 
@@ -182,6 +187,7 @@ class ServicoDOM {
 
     /**
      * Lógica de acionamento de "ação Por Ocorrência" e bloqueador do botão
+     * @param {*} ação Ação que foi realizada pelo usuário.
      * */
     liberacaoDeOcorrencia(acao) {
         const link = acao.target.closest("a");
@@ -206,6 +212,7 @@ class ServicoDOM {
     }
 }
 
+//Controller(main): Central de controle de ações da aplicação.
 const ativo = true;
 async function main() {
     const aButton = document.getElementById('9');
@@ -213,12 +220,18 @@ async function main() {
 
     if (input && ativo) {
         const service = new ServicoDOM();
+        /*A partir do input do usuário, será criada uma lista com todos os códigos e suas respectivas descrições.
+        Por enquanto esse dados está estático*/
+        /*Essa função irá criar os objetos necessário e enviar a mensagem para a API onde será enviado a mensagem do Whatsapp
+        e armazenado no banco de dados.*/
         const dadosOcorrencia = service.buscarDadosOcorrencia(81, 'CHEGADA NA PORTARIA DO DESTINATARIO').objDadosOcorrencia;
+        //Criação de Chave única (pode ser alterada se necessário).
         const unicKeyConcat = `${dadosOcorrencia.usuario.nome}${dadosOcorrencia.codCTRC}${dadosOcorrencia.codOcorrencia}${dadosOcorrencia.dataCriacao}${dadosOcorrencia.horaCriacao}`
         const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
-        console.log("KEY MAIN" + unicKey)
+        //Inclusão de "Vigia" e respectiva ação no botão de envio de solicitação.
         const acaoClick = (acao) => service.liberacaoDeOcorrencia(acao);
         document.addEventListener('click', acaoClick, true);
+        //Ações realizada de acordo com o retorno da API que verifica o status da resposta do whatsapp no banco de dados.
         if (unicKey.length >= 22) {
             const verificarRetorno = setInterval(async () => {
                 const dadosRetorno = await service.getVerifique(unicKey);
