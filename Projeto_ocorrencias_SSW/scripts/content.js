@@ -20,7 +20,7 @@ const acoes = {
 };
 
 /**
-* @constructor Cria objeto com dados do usuário
+* @classdesc Cria objeto com dados do usuário.
 */
 class DadosUsuario {
     constructor(nome, filial) {
@@ -30,7 +30,7 @@ class DadosUsuario {
 }
 
 /**
- * @constructor Cria objeto com dados da ocorrência
+ * @classdesc Cria objeto com dados da ocorrência.
  */
 class DadosOcorrencia {
     constructor(codOcorrencia, dsOcorrencia, codCTRC, data, hora, usuario) {
