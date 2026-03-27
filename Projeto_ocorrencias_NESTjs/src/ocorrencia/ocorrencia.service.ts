@@ -7,7 +7,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class OcorrenciaService {
     constructor(private service: PrismaService
     ) { }
-
+    /**
+     * 
+     * @param ocorrencia 
+     * @returns 
+     */
     async enviarWapp(ocorrencia: EnvOcorrencia): Promise<any> {
         try {
             const response = await fetch("https://api.sacflow.io/api/send-message", {
@@ -50,7 +54,11 @@ export class OcorrenciaService {
             console.error(e);
         }
     }
-
+    /**
+     * 
+     * @param ocorrencia 
+     * @returns 
+     */
     async criarOcorrencia(ocorrencia: EnvOcorrencia) {
         const resultado = this.service.ocorrencia.create({
             data: {
@@ -61,6 +69,11 @@ export class OcorrenciaService {
         return resultado;
     }
 
+    /**
+     * 
+     * @param keySolicit 
+     * @returns 
+     */
     async verificarOcorrencia(keySolicit: string): Promise<Ocorrencia> {
         const ocorrencia = await this.service.ocorrencia.findFirst({
             where: {
@@ -72,7 +85,11 @@ export class OcorrenciaService {
         }
         return ocorrencia;
     }
-
+    /**
+     * 
+     * @param ocorrencia 
+     * @returns 
+     */
     async atualizarOcorrencia(ocorrencia: Ocorrencia): Promise<any> {
         const atualizacao = await this.service.ocorrencia.update({
             where: {
@@ -82,6 +99,7 @@ export class OcorrenciaService {
                 retorno: ocorrencia.retorno
             }
         })
+        console.log("Service:Atualização Ocorrência", atualizacao.key, atualizacao.retorno)
         return atualizacao;
     }
 

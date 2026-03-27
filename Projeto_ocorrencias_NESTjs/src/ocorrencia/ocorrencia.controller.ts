@@ -6,26 +6,38 @@ import { Ocorrencia, EnvOcorrencia } from 'src/dto/ocorrencia.dto';
 export class OcorrenciaController {
     constructor(private readonly service: OcorrenciaService) { }
 
-    //Extensão >>> API >>> SACFLOW
+    /**
+     * Extensão >>> API >>> SACFLOW
+     * @param ocorrencia 
+     * @returns 
+     */
     @Post('create')
     async create(@Body() ocorrencia: EnvOcorrencia) {
         const salveBanco = await this.service.criarOcorrencia(ocorrencia);
         const mensagem = await this.service.enviarWapp(ocorrencia);
-        console.log(salveBanco + "\n" + mensagem)
+        console.log("Controller", salveBanco.retorno, mensagem)
         return mensagem;
     }
 
-    //Extensão >>> API
+    /**
+     * Extensão >>> API
+     * @param key 
+     * @returns 
+     */
     @Get('verificar/:key')
     async verificarOcorrencia(@Param('key') key: string): Promise<Ocorrencia> {
         return await this.service.verificarOcorrencia(key);
     }
 
-    //SACFLOW >>> API
+    /**
+     * SACFLOW >>> API
+     * @param ocorrencia 
+     * @returns 
+     */
     @Put('atualizar')
     async atualizarStatusOcorrencia(@Body() ocorrencia: Ocorrencia) {
         const retorno = this.service.atualizarOcorrencia(ocorrencia);
-        console.log(retorno)
+        console.log("Controller:retorno da atualização" + retorno)
         return retorno;
     }
 }

@@ -232,7 +232,7 @@ async function main() {
         const acaoClick = (acao) => service.liberacaoDeOcorrencia(acao);
         document.addEventListener('click', acaoClick, true);
         //Ações realizada de acordo com o retorno da API que verifica o status da resposta do whatsapp no banco de dados.
-        if (unicKey.length >= 22) {
+        if (unicKey.length >= 22 && dadosOcorrencia.horaCriacao) {
             const verificarRetorno = setInterval(async () => {
                 const dadosRetorno = await service.getVerifique(unicKey);
                 if (dadosRetorno.retorno === "Sim") {
