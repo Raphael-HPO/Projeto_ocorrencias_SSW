@@ -7,25 +7,31 @@
 - ## Diagrama da Arquitetura Global
 ```mermaid
     flowchart
+    classDef app fill:#4a0e0e,stroke:#ff5555,color:#fff
+        style APP fill:#260a0a,stroke:#ff5555,color:#fff,stroke-width:2px
+    classDef amz fill:#1b5e20,stroke:#66bb6a,color:#fff
+        style AMZ fill:#0a2610,stroke:#66bb6a,color:#fff,stroke-width:2px
+    classDef svc fill:#0d47a1,stroke:#42a5f5,color:#fff
+        style SVC fill:#051e3e,stroke:#42a5f5,color:#fff,stroke-width:2px
         direction LR
         subgraph ARQ[ARQUITETURA COMPLETA]
             PLT["`PLATAFORMA
             SSW`"]
 
             subgraph APP[SERVIÇOS]
-                direction RL
-                API[API NEST.js]
+                direction RL:::app
+                API[API NEST.js]:::app
                 EXT["`EXTENSÃO
-                GOOGLE`"]
+                GOOGLE`"]:::app
                 API ~~~ EXT
             end
 
             subgraph SVC[SERVIÇOS EXTERNOS]
-                SCF[SacFlow]
+                SCF[SacFlow]:::svc
             end
 
             subgraph AMZ[ARMAZENAMENTO]
-                DB[(PostgreSql)]
+                DB[(PostgreSql)]:::amz
             end
 
             PLT ~~~ APP ~~~ SVC ~~~ AMZ
