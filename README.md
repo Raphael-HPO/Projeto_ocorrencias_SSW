@@ -61,10 +61,10 @@
 - ### Ferramentas utilizadas e Pré-Requisitos Globais
     | Ferramenta | Descrição | Finalidade |
     | :--- | :--- | :--- |
-    | **JavaScript (ES6+)** | Linguagem de programação de alto nível. | Implementação da lógica de comportamento, manipulação de DOM e comunicação com a API. |
-    | **HTML5** | Linguagem de marcação para web. | Estruturação da interface visual da extensão (Popups, Options e Sidebars). |
-    | **CSS3** | Extensão de estilo para documentos HTML. | Estilização visual, layouts responsivos e experiência do usuário (UX). |
-    | **Manifest V3** | Padrão atual de extensões do Chrome. | Configuração de permissões, service workers e regras de segurança da extensão. |
+    | [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript) | Linguagem de programação de alto nível. | Implementação da lógica, manipulação de DOM e comunicação assíncrona. |
+    | [HTML5](https://developer.mozilla.org/pt-BR/docs/Web/HTML) | Linguagem de marcação para web. | Estruturação da interface visual (Popups e Sidebars). |
+    | [CSS3](https://developer.mozilla.org/pt-BR/docs/Web/CSS) | Mecanismo de estilização. | Design responsivo e identidade visual da extensão. |
+    | [Manifest V3](https://developer.chrome.com/docs/extensions/mv3/intro/) | Documento de configuração do Chrome. | Gerenciamento de permissões e ciclo de vida da extensão. |
 
 ## **API NEST.js** - Ferramenta chamadas de requisições/ações externas
 - ### Descrição da aplicação
@@ -73,12 +73,11 @@
 - ### Ferramentas utilizadas e Pré-Requisitos Globais
     | Ferramenta | Descrição | Finalidade |
     | :--- | :--- | :--- |
-    | **Node.js** | Ambiente de execução JavaScript runtime. | Plataforma base para execução do servidor backend de alta performance. |
-    | **Nest.js** | Framework progressivo para Node.js. | Organização da arquitetura (Módulos, Controllers, Services) seguindo padrões escaláveis. |
-    | **TypeScript** | Superconjunto de JavaScript com tipagem estática. | Aumentar a segurança do código, facilitar a manutenção e evitar erros em tempo de execução. |
-    | **Prisma ORM** | Object-Relational Mapper moderno. | Gerenciamento do banco de dados, migrações (migrations) e consultas tipadas. |
-    | **SacFlow** | Integração de fluxo de atendimento. | Gerenciamento e automação dos fluxos de comunicação e SAC digital. |
-    | **PostgreSQL** | Banco de Dados Relacional. | Armazenamento persistente das informações coletadas e configuradas. |
+    | [Node.js](https://nodejs.org/) | Ambiente de execução JavaScript. | Base para execução do servidor backend. |
+    | [Nest.js](https://nestjs.com/) | Framework progressivo para Node.js. | Arquitetura escalável e organizada do servidor. |
+    | [TypeScript](https://www.typescriptlang.org/) | Superconjunto de JS com tipagem. | Segurança no desenvolvimento e melhor manutenção de código. |
+    | [Prisma ORM](https://www.prisma.io/) | Mapeador objeto-relacional (ORM). | Interação produtiva e segura com o banco de dados. |
+    | [SacFlow](https://sacflow.io/) | Plataforma de atendimento/automação. | Gestão de fluxos de conversas e integração de SAC. |
 
 ## Pré-Requisitos Globais
 | Requisito | Versão Sugerida | Link para Download |
@@ -93,3 +92,8 @@
     * A aplicação ainda não está finalizada, por isso ainda existe essa necessidade.
 2. Criar .env com link do banco de dados na pasta "Projeto_ocorrencias_NESTjs";
 3. Iniciar API Nest.js, navegando até a pasta "Projeto_ocorrencias_NESTjs", execute `npm install` e `npm run start:dev`.
+    ```bash
+    cd .\Projeto_ocorrencias_NESTjs\
+    npm install
+    npm run start:dev
+    ```
