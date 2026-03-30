@@ -266,6 +266,28 @@ const verificarExistencia = setInterval(() => {
 }, 1000);
 
 /**
+ * Inclusão de "Vigia" para verificar a existência do botão e incluir a função de bloqueio e ação do mesmo.
+ * 
+ */
+function armarBotao() {
+    const botao = document.getElementById('9');
+
+    // Se o botão existe e ainda não foi "vigiado" por nós
+    if (botao && !botao.getAttribute('data-vigiado')) {
+        console.log("Botão encontrado! Armando o vigia...");
+
+        // Marcamos o botão para não adicionar o evento mil vezes
+        botao.setAttribute('data-vigiado', 'true');
+
+        // Adicionamos o evento
+        main(); // Chama a função main para configurar o evento
+    }
+}
+setInterval(armarBotao, 500);
+armarBotao(); // Chama a função para tentar armar o botão inicialmente
+
+
+/**
  * Envio de dados para o background(Onde são realizadas as ações.)
  * @param {*} valueJson Json que será enviado para as APIs
  */
