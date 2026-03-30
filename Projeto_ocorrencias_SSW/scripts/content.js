@@ -6,7 +6,7 @@ const acoes = {
     81: () => {
         const service = new ServicoDOM();
         const dadosOcorrencia = service.buscarDadosOcorrencia(81, 'CHEGADA NA PORTARIA DO DESTINATARIO').objDadosOcorrencia;
-        const unicKeyConcat = new String().concat([dadosOcorrencia.usuario.nome, dadosOcorrencia.codCTRC, dadosOcorrencia.codOcorrencia, dadosOcorrencia.dataCriacao, dadosOcorrencia.horaCriacao]);
+        const unicKeyConcat = new String().concat([dadosOcorrencia.usuario.nome, dadosOcorrencia.usuario.filial, dadosOcorrencia.codCTRC, dadosOcorrencia.codOcorrencia, dadosOcorrencia.dataCriacao, dadosOcorrencia.horaCriacao]);
         const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
         service.spamStatus("pendente");
         console.log("KEY 81" + unicKey)
@@ -76,7 +76,6 @@ class ServicoDOM {
         return { objDadosOcorrencia, jsonDadosOcorrencia };
     }
 
-    //
     /**
      * Realiza a busca da função correspondente ao número da ocorrência.
      * @param {*} numeroOcorrencia 
@@ -89,7 +88,6 @@ class ServicoDOM {
         }
     }
 
-    //
     /**
      * Função aplicada internamente para verificar caso a função correspondente esteja na lista "ações".
      * @param {*} numeroOcorrencia Número da ocorrência disponibilizado pelo SSW
@@ -112,13 +110,14 @@ class ServicoDOM {
     spamStatus(status) {
         const div = document.createElement('div');
         const form = document.getElementById('frm');
+        const existingDiv = document.getElementById('spamStatus');
 
         div.id = 'spamStatus';
         div.className = 'texto';
         div.style.position = "absolute";
         div.style.left = "320px";
         div.style.top = "240px";
-        if (status == "pendente") {
+        if (status == "pendente" && !existingDiv) {
             div.textContent = "Solicitação sendo avaliada! Aguarde...";
             div.style.color = 'orange';
         } else if (status == "autorizado") {
@@ -165,7 +164,7 @@ class ServicoDOM {
     async solicitacaoDeOcorrencia() {
         //Lógica para solicitar a liberação de ocorrência
         const dados = this.buscarDadosOcorrencia().objDadosOcorrencia;
-        const unicKeyConcat = new String().concat([dados.usuario.nome, dados.codCTRC, dados.codOcorrencia, dados.dataCriacao, dados.horaCriacao]);
+        const unicKeyConcat = new String().concat([dados.usuario.nome, dados.usuario.filial, dados.codCTRC, dados.codOcorrencia, dados.dataCriacao, dados.horaCriacao]);
         const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
         const retorno = this.getVerifique(unicKey);
 
@@ -226,7 +225,7 @@ async function main() {
         e armazenado no banco de dados.*/
         const dadosOcorrencia = service.buscarDadosOcorrencia(81, 'CHEGADA NA PORTARIA DO DESTINATARIO').objDadosOcorrencia;
         //Criação de Chave única (pode ser alterada se necessário).
-        const unicKeyConcat = `${dadosOcorrencia.usuario.nome}${dadosOcorrencia.codCTRC}${dadosOcorrencia.codOcorrencia}${dadosOcorrencia.dataCriacao}${dadosOcorrencia.horaCriacao}`
+        const unicKeyConcat = `${dadosOcorrencia.usuario.nome}${dadosOcorrencia.usuario.filial}${dadosOcorrencia.codCTRC}${dadosOcorrencia.codOcorrencia}${dadosOcorrencia.dataCriacao}${dadosOcorrencia.horaCriacao}`
         const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
         //Inclusão de "Vigia" e respectiva ação no botão de envio de solicitação.
         const acaoClick = (acao) => service.liberacaoDeOcorrencia(acao);
