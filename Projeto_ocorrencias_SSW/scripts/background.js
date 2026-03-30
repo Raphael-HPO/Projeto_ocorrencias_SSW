@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
      * @returns status da realização do fetch
      */
     async function postToAPI() {
-        const unicKeyConcat = `${request.usuario.nome}${request.codCTRC}${request.codOcorrencia}${request.dataCriacao}${request.horaCriacao}`
+        const unicKeyConcat = `${request.usuario.nome}${request.usuario.filial}${request.codCTRC}${request.codOcorrencia}${request.dataCriacao}${request.horaCriacao}`
         const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
         try {
             const response = await fetch("https://nonvehemently-elmier-jordynn.ngrok-free.dev/ocorrencia/create", {
