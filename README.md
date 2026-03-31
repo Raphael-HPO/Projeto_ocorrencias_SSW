@@ -109,10 +109,11 @@
 - [ ] **Variável**: Lançamento de apenas notificações ao realizar autorizações;
     - [ ] **Possibilidade**: Notificação de retorno de acordo com o tempo que o veiculo está parado;
 - [ ] **Prioridade**: Quando é bipada uma sobra ou falta, verificar se houve uma outra abertura de ocorrência para notificar que existe uma falta em algum lugar dessa carga;
-- [ ] **Prioridade**: Qual se é realizada uma negação de abertura de ocorrência, essa ocorrência não pode ser solicitada novamente (spam de ocorrências) por um periodo.
+- [ ] **Prioridade**: Qual é negada uma abertura de ocorrência, essa ocorrência não pode ser solicitada novamente (spam de ocorrências) por um periodo.
+- [ ] **Possibilidade**: Ao realizar uma negação de abertura de ocorrência, enviar um email para os envolvidos, formalizando o assunto.
 ## Perguntas e Resoluções
 
-- Quando se nega uma abertura de ocorrência, em quanto tempo seria possível realizar abertura de outra ocorrência...?
+- Quando se é negada uma abertura de ocorrência, em quanto tempo seria possível realizar abertura de outra ocorrência...?
 - O que fazer quando existem muitas ocorrências seguida?
     - **Resolvido**: As ocorrências podem ser lançadas uma seguida da outra agora.
 - Através da bipagem é possível localizar todas as cargas que existem?
