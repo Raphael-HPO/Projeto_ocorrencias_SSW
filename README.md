@@ -97,3 +97,21 @@
     npm install
     npm run start:dev
     ```
+
+## Próxima Fase (Melhorias):
+- [] Durante o "Período comercial", é necessário criar uma "trava" que apenas manda a mensagem e não faz o bloqueio;
+- [x] Incluir filial na chave; 
+Capturar a URL e incluir em uma fila de processamento;
+Opção de incluir uma VM para rodar a aplicação a parte;
+Criar um buscar ocorrência sem parâmetros;
+O que fazer quando existem muitas ocorrências seguida?
+Valor dela e qual é o cliente ao lanãr uma ocorrência;
+Necessidade de validação de ocorrência de acordo com o valor da produto;
+Seleção de números específicos, respectivamente ao número da ocorrência;
+Lançamento de apenas notificações ao realizar autorizações;
+(ideia):Notificação de retorno de acordo com o tempo que o veiculo está parado;
+Quando é bipada uma sobra ou falta, verificar se houve uma outra abertura de ocorrência para notificar que existe uma falta em algum lugar dessa carga;
+Através da bipagem é possível localizar todas as cargas que existem?
+Através da quantidade de volumes é possível encontrar a sobra de alguma falta?
+77(falta)(Bloqueio de acordo com o valor) e 
+30(avaria)(notificação)(bloqueio dependendo do usuário - se for da operação)

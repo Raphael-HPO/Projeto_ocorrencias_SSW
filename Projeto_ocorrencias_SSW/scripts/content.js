@@ -159,8 +159,6 @@ class ServicoDOM {
      * Recebe o resultado do "POST" ou "GET" trazendo o resultado da validação. Esses dados são trazidos apartir de uma requisição feita pelo "BackGround".
      * @returns Booleano dependêndo do retorno da API
      */
-
-    //
     async solicitacaoDeOcorrencia() {
         //Lógica para solicitar a liberação de ocorrência
         const dados = this.buscarDadosOcorrencia().objDadosOcorrencia;
