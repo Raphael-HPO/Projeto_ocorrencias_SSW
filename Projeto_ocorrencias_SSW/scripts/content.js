@@ -12,6 +12,7 @@ const acoes = {
         console.log("KEY 81" + unicKey)
         sendBack(dadosOcorrencia);
         return true;
+
     },
     77: () => {
         console.log("ACAO 77");
@@ -39,7 +40,7 @@ class DadosOcorrencia {
         this.codCTRC = codCTRC;
         this.dataCriacao = data;
         this.horaCriacao = hora;
-        this.usuario = usuario
+        this.usuario = usuario;
     }
 }
 
@@ -55,13 +56,14 @@ class ServicoDOM {
      * @returns 
      */
     buscarDadosOcorrencia(codOcorrencia, dsOcorrencia) {
-        console.log("Localizando dados...");
         const dadosUsuario = document.querySelectorAll('#infodiv b')[1].textContent;
         const filialUsuario = dadosUsuario.replace(/\u00A0/g, " ").trim().split(' ')[0];
         const nomeUsuario = dadosUsuario.replace(/\u00A0/g, " ").trim().split(' ')[1];
         const UsuarioCriador = new DadosUsuario(nomeUsuario, filialUsuario);
 
+        //const cliente = document.querySelectorAll('#data')[7].textContent;
         const codCTRC = document.getElementById('1').textContent;
+        //const valor = document.querySelectorAll('#data')[4].textContent;
         const dataCriacao = document.getElementById('4').value;
         const horaCriacao = document.getElementById('5').value;
         const objDadosOcorrencia = new DadosOcorrencia(
@@ -193,30 +195,47 @@ class ServicoDOM {
             if (contador < 1) {
                 contador += 1;
                 const inputAtual = document.getElementById('3').value.trim();
+                const periodoMes = new Date().getMonth();
+                console.log(periodoMes)
                 if (inputAtual) {
                     this.acaoPorOcorrencia(inputAtual, acoes);
-                } else {
-                    console.log("Campo Vazio")
                 }
                 acao.preventDefault();
                 acao.stopImmediatePropagation();
             } else {
-                //feat: Aplicar função, caso o botão seja clicado várias vezes, mostrando mensagem.
+                //TODO: Aplicar função, caso o botão seja clicado várias vezes, mostrando mensagem.
                 acao.preventDefault();
                 acao.stopImmediatePropagation();
             }
         }
     }
+
+    /**
+     * Lógica para ativar e inativar a aplicação de acordo com o período do ano.
+     * 
+     * @param {*} mesInicio Período de ínicio de funcionamento da extensão
+     * @param {*} mesFim Período de fim de funcionamento da extensão
+     * @returns 
+     */
+    periodoDeSobrecarga(mesInicio, mesFim) {
+        const mesAtual = new Date().getMonth() + 1;
+        if (mesAtual >= mesInicio && mesAtual <= mesFim) {
+            return true;
+        } else {
+            return false
+        }
+    }
 }
 
 //Controller(main): Central de controle de ações da aplicação.
-const ativo = true;
+//Controle de ativação da extensão!
+const statusExtensao = true;
 async function main() {
     const aButton = document.getElementById('9');
     const input = document.getElementById('3');
-
-    if (input && ativo) {
-        const service = new ServicoDOM();
+    const service = new ServicoDOM();
+    //Condição que inclui o período para inserir as travas
+    if ((input && statusExtensao) && (service.periodoDeSobrecarga(1, 4) || service.periodoDeSobrecarga(10, 12))) {
         /*A partir do input do usuário, será criada uma lista com todos os códigos e suas respectivas descrições.
         Por enquanto esse dados está estático*/
         /*Essa função irá criar os objetos necessário e enviar a mensagem para a API onde será enviado a mensagem do Whatsapp
@@ -282,7 +301,6 @@ function armarBotao() {
 }
 setInterval(armarBotao, 500);
 armarBotao(); // Chama a função para tentar armar o botão inicialmente
-
 
 /**
  * Envio de dados para o background(Onde são realizadas as ações.)
