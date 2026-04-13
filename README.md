@@ -99,7 +99,8 @@
     ```
 
 ## Próxima Fase (Melhorias):
-- [ ] Durante o **"Período comercial"**, é necessário criar uma "trava" que apenas manda a mensagem e não faz o bloqueio;
+- [x] Botão de "Ativação" e "Inativação" da extensão.
+- [x] Durante o **"Período comercial"**, é necessário criar uma "trava" que apenas manda a mensagem e não faz o bloqueio;
 - [x] Incluir filial na chave; 
 - [ ] **Possibilidade**: Capturar a URL e incluir em uma fila de processamento e Opção de incluir uma VM para rodar a aplicação a parte;
 - [ ] Criar uma buscar de ocorrências sem parâmetros;
