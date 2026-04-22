@@ -235,7 +235,7 @@ async function main() {
     const input = document.getElementById('3');
     const service = new ServicoDOM();
     //Condição que inclui o período para inserir as travas
-    if ((input && statusExtensao) && (service.periodoDeSobrecarga(1, 4) || service.periodoDeSobrecarga(10, 12))) {
+    if ((input && statusExtensao) && (service.periodoDeSobrecarga(1, 5) || service.periodoDeSobrecarga(10, 12))) {
         /*A partir do input do usuário, será criada uma lista com todos os códigos e suas respectivas descrições.
         Por enquanto esse dados está estático*/
         /*Essa função irá criar os objetos necessário e enviar a mensagem para a API onde será enviado a mensagem do Whatsapp
@@ -265,13 +265,11 @@ async function main() {
                     console.warn("dadosRetorno is undefined, null, or its 'retorno' property is not 'Sim'.", dadosRetorno);
                 }
             }, 10000);
-
         }
         return true;
     }
     return false;
 }
-
 /**
  * Ação realizada devido a geração de página vazia e depois preenchimento.
  */
@@ -279,12 +277,12 @@ const verificarExistencia = setInterval(() => {
     if (main()) {
         clearInterval(verificarExistencia);
     }
-}, 1000);
+}, 500);
 
 /**
  * Inclusão de "Vigia" para verificar a existência do botão e incluir a função de bloqueio e ação do mesmo.
- * 
  */
+
 function armarBotao() {
     const botao = document.getElementById('9');
 
