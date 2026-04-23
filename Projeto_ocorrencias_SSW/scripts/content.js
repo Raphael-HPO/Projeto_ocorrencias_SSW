@@ -281,8 +281,8 @@ const verificarExistencia = setInterval(() => {
 
 /**
  * Inclusão de "Vigia" para verificar a existência do botão e incluir a função de bloqueio e ação do mesmo.
+ * 
  */
-
 function armarBotao() {
     const botao = document.getElementById('9');
 
