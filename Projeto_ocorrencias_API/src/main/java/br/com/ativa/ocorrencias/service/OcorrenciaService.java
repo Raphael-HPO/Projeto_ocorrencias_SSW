@@ -2,10 +2,7 @@ package br.com.ativa.ocorrencias.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.config.RuntimeBeanReference;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +37,7 @@ public class OcorrenciaService {
          * 
          * @param ocorrenciaDTO
          * @return
+         * @throws
          */
         @Transactional
         public Ocorrencia criarOcorrencia(CreateOcorrenciaDTO ocorrenciaDTO) {
@@ -55,6 +53,7 @@ public class OcorrenciaService {
          * 
          * @param ocorrencia
          * @return
+         * @throws
          */
         public Ocorrencia atualizarOcorrencia(Ocorrencia ocorrencia) {
                 Ocorrencia ocorrenciaExistente = this.verificarOcorrencia(ocorrencia.getKey());
@@ -69,6 +68,7 @@ public class OcorrenciaService {
          * //os templates do WhatsApp Business API
          * 
          * @param ocorrenciaDTO
+         * @throws
          */
         @Async
         public void enviarMensagemWhatsApp(CreateOcorrenciaDTO ocorrenciaDTO) {

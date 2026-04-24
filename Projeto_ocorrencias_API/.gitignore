@@ -12,7 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
-*.properties
+application-test.properties
+application-prod.properties
 *.yml
 
 ### IntelliJ IDEA ###
@@ -20,6 +21,7 @@ target/
 *.iws
 *.iml
 *.ipr
+*.env
 
 ### NetBeans ###
 /nbproject/private/
