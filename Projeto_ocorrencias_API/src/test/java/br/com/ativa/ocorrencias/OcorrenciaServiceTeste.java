@@ -26,6 +26,4 @@ public class OcorrenciaServiceTeste {
         assertThrows(OcorrenciaNaoEncontradaException.class, () -> service.verificarOcorrencia(""));
     }
 
-    @Test
-    
 }
