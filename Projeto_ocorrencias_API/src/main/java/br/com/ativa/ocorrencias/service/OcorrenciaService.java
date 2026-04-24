@@ -72,7 +72,6 @@ public class OcorrenciaService {
          */
         @Async
         public void enviarMensagemWhatsApp(CreateOcorrenciaDTO ocorrenciaDTO) {
-                verificarOcorrencia(ocorrenciaDTO.key());
                 client.envioMensagemWhatsApp("Bearer b65f1107-9206-4207-b3bc-e31caf9b476a",
                                 new OcorrenciaClientExternoDTO(15709L, 629L, "SSW",
                                                 new ContatoDestinatarioDTO("Raphael.O", "5511951166249"),
