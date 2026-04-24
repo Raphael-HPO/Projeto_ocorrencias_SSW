@@ -1,5 +1,5 @@
 #FASE 1 - Inclusão da imagem do mavem e inclusão do arquivo POM.xml e SRC
-FROM maven:3.9.6-eclipse-temurim-21 AS build
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
