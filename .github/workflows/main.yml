@@ -1,25 +1,24 @@
 name: CI/CD no Meu Computador
 
-# 1. Quando o robô vai agir?
 on:
   push:
-    branches: [ main ] # Toda vez que você mandar código para a main
+    branches: [ main ]
 
-# 2. O que o robô vai fazer?
 jobs:
   deploy-local:
-    # AQUI está o segredo: ele vai procurar o seu PC que está com o run.cmd aberto
     runs-on: self-hosted
 
+    # AQUI ESTÁ O TRUQUE: Diz ao GitHub para entrar na pasta da sua API antes de rodar os comandos
+    defaults:
+      run:
+        working-directory: ./Projeto_ocorrencias_API # <--- Coloque o nome da sua pasta exatamente como está no Git
+
     steps:
-      # Passo 1: Copiar o código do GitHub para dentro da pasta do Runner no seu PC
       - name: Baixar código do GitHub
         uses: actions/checkout@v4
 
-      # Passo 2: Rodar seus testes JUnit (O comando que você usa no terminal)
       - name: Executar Testes JUnit
-        run: mvn test
+        run: ./mvnw test
 
-      # Passo 3: Atualizar o Docker com o código novo
       - name: Build e Deploy no Docker
         run: docker-compose up -d --build
