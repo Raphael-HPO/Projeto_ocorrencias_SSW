@@ -18,8 +18,6 @@ import br.com.ativa.ocorrencias.service.OcorrenciaService;
 @CrossOrigin("*") // Permite acesso de outros navegadores, evitando erros de CORS
 @RestController
 @RequestMapping("/ocorrencia")
-// TODO: implementar um ExceptionHandler para tratar as exceções de
-// forma personalizada e globalmente
 public class OcorrenciaController {
     OcorrenciaService service;
 
