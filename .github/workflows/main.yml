@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Criar arquivo .env
-        shell: pwsh # Usa o PowerShell
+        shell: powershell # Usa o PowerShell
         run: |
           "PORT=${{ secrets.PORT }}" | Out-File -FilePath .env
           "DB_URL=${{ secrets.DB_URL }}" | Out-File -FilePath .env -Append
