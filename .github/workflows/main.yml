@@ -17,6 +17,14 @@ jobs:
       - name: Baixar código do GitHub
         uses: actions/checkout@v4
 
+      - name: Criar arquivo .env
+        shell: pwsh # Usa o PowerShell
+        run: |
+          "PORT=${{ secrets.PORT }}" | Out-File -FilePath .env
+          "DB_URL=${{ secrets.DB_URL }}" | Out-File -FilePath .env -Append
+          "DB_USER=${{ secrets.DB_USER }}" | Out-File -FilePath .env -Append
+          "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | Out-File -FilePath .env -Append
+
       - name: Executar Testes JUnit
         run: ./mvnw test
 
