@@ -14,7 +14,7 @@ target/
 .sts4-cache
 application-test.properties
 application-prod.properties
-docker-compose.yml
+#docker-compose.yml
 
 ### IntelliJ IDEA ###
 .idea
