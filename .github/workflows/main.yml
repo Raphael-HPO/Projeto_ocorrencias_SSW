@@ -18,12 +18,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Criar arquivo .env
-        shell: powershell # Usa o PowerShell
+        shell: powershell
         run: |
-          "PORT=${{ secrets.PORT }}" | Out-File -FilePath .env
-          "DB_URL=${{ secrets.DB_URL }}" | Out-File -FilePath .env -Append
-          "DB_USER=${{ secrets.DB_USER }}" | Out-File -FilePath .env -Append
-          "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | Out-File -FilePath .env -Append
+          $content = @(
+            "PORT=${{ secrets.PORT }}",
+            "DB_URL=${{ secrets.DB_URL }}",
+            "DB_USER=${{ secrets.DB_USER }}",
+            "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+          )
+          # Este comando abaixo cria o arquivo em UTF-8 SEM o caractere invisível (BOM)
+          [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
 
       - name: Executar Testes JUnit
         run: ./mvnw test
