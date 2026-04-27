@@ -22,29 +22,23 @@ jobs:
           java-version: "21"
           distribution: "temurin"
 
-      - name: Criar arquivo .env
-        shell: powershell
-        run: |
-          $content = @(
-          "PORTA=${{ secrets.PORTA }}",
-          "DB_URL=${{ secrets.DB_URL }}",
-          "DB_USER=${{ secrets.DB_USER }}",
-          "DB_PASS=${{ secrets.DB_PASS }}",
-          "TOKEN_WHATSAPP=${{ secrets.TOKEN_WHATSAPP }}",
-          "ID_CONTA=${{ secrets.ID_CONTA }}",
-          "ID_CANAL=${{ secrets.ID_CANAL }}",
-          "ID_FLOW_RESPOSTA=${{ secrets.ID_FLOW_RESPOSTA }}"
-          )
-          [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
+      # - name: Criar arquivo .env
+      #  shell: powershell
+      #  run: |
+      #    $content = @(
+      #    "PORTA=${{ secrets.PORTA }}",
+      #    "DB_URL=${{ secrets.DB_URL }}",
+      #    "DB_USER=${{ secrets.DB_USER }}",
+      #    "DB_PASS=${{ secrets.DB_PASS }}",
+      #    "TOKEN_WHATSAPP=${{ secrets.TOKEN_WHATSAPP }}",
+      #    "ID_CONTA=${{ secrets.ID_CONTA }}",
+      #    "ID_CANAL=${{ secrets.ID_CANAL }}",
+      #    "ID_FLOW_RESPOSTA=${{ secrets.ID_FLOW_RESPOSTA }}"
+      #    )
+      #   [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
       - name: Verificar .env gerado
         shell: powershell
         run: Get-Content .env
-
-      - name: Testar conexão banco
-        shell: powershell
-        run: |
-          $env:PGPASSWORD = "${{ secrets.DB_PASS }}"
-          psql -h localhost -U "${{ secrets.DB_USER }}" -d ocorrencias -c "SELECT 1"
 
       - name: Executar Testes JUnit
         shell: powershell
