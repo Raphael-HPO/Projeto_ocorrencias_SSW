@@ -24,7 +24,7 @@ jobs:
             "PORT=${{ secrets.PORT }}",
             "DB_URL=${{ secrets.DB_URL }}",
             "DB_USER=${{ secrets.DB_USER }}",
-            "DB_PASSWORD=${{ secrets.DB_PASSWORD }}"
+            "DB_PASSWORD=${{ secrets.DB_PASS }}"
           )
           # Este comando abaixo cria o arquivo em UTF-8 SEM o caractere invisível (BOM)
           [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
