@@ -26,10 +26,10 @@ jobs:
         shell: powershell
         run: |
           $content = @(
-            "PORT=${{ secrets.PORTA }}",
+            "PORTA=${{ secrets.PORTA }}",
             "DB_URL=${{ secrets.DB_URL }}",
             "DB_USER=${{ secrets.DB_USER }}",
-            "DB_PASSWORD=${{ secrets.DB_PASS }}"
+            "DB_PASS=${{ secrets.DB_PASS }}"
           )
           [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
 
