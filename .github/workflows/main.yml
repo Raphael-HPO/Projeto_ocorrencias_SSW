@@ -36,6 +36,12 @@ jobs:
         shell: powershell
         run: Get-Content .env
 
+      - name: Testar conexão banco
+        shell: powershell
+        run: |
+          $env:PGPASSWORD = "${{ secrets.DB_PASS }}"
+          psql -h localhost -U "${{ secrets.DB_USER }}" -d ocorrencias -c "SELECT 1"
+
       - name: Executar Testes JUnit
         run: ./mvnw test
 
