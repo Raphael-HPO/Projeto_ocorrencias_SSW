@@ -26,7 +26,6 @@ jobs:
             "DB_USER=${{ secrets.DB_USER }}",
             "DB_PASSWORD=${{ secrets.DB_PASS }}"
           )
-          # Este comando abaixo cria o arquivo em UTF-8 SEM o caractere invisível (BOM)
           [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
 
       - name: Executar Testes JUnit
