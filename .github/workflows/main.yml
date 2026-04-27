@@ -26,12 +26,15 @@ jobs:
         shell: powershell
         run: |
           $content = @(
-            "PORTA=${{ secrets.PORTA }}",
-            "DB_URL=${{ secrets.DB_URL }}",
-            "DB_USER=${{ secrets.DB_USER }}",
-            "DB_PASS=${{ secrets.DB_PASS }}"
+            "DB_URL=${{secrets.DB_URL}}",
+            "DB_USER=${{secrets.DB_USER}}",
+            "DB_PASS=${{secrets.DB_PASS}}",
+            "PORTA=${{secrets.PORTA}}"
           )
           [System.IO.File]::WriteAllLines("$(Get-Location)/.env", $content)
+      - name: Verificar .env gerado
+        shell: powershell
+        run: Get-Content .env
 
       - name: Executar Testes JUnit
         run: ./mvnw test
