@@ -21,7 +21,7 @@ jobs:
         shell: powershell
         run: |
           $content = @(
-            "PORT=${{ secrets.PORT }}",
+            "PORT=${{ secrets.PORTA }}",
             "DB_URL=${{ secrets.DB_URL }}",
             "DB_USER=${{ secrets.DB_USER }}",
             "DB_PASSWORD=${{ secrets.DB_PASS }}"
