@@ -8,14 +8,19 @@ jobs:
   deploy-local:
     runs-on: self-hosted
 
-    # AQUI ESTÁ O TRUQUE: Diz ao GitHub para entrar na pasta da sua API antes de rodar os comandos
     defaults:
       run:
-        working-directory: ./Projeto_ocorrencias_API # <--- Coloque o nome da sua pasta exatamente como está no Git
+        working-directory: ./Projeto_ocorrencias_API
 
     steps:
       - name: Baixar código do GitHub
         uses: actions/checkout@v4
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
 
       - name: Criar arquivo .env
         shell: powershell
