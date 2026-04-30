@@ -72,6 +72,7 @@ public class OcorrenciaService {
          * //TODO: Implementar lógica para envio de mensagens dinâmicas, utilizando os
          * //dados por setor para enviar as mensagens de forma personalizada, utilizando
          * //os templates do WhatsApp Business API
+         * //TODO:
          * 
          * @param ocorrenciaDTO
          * @throws
