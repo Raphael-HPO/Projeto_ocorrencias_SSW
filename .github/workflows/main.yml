@@ -23,6 +23,10 @@ jobs:
           java-version: "21"
           distribution: "temurin"
 
+      - name: Dar permissão ao mvnw
+        run: chmod +x ./mvnw
+        working-directory: ./Projeto_ocorrencias_API
+
       - name: Executar Testes JUnit
         env:
           DB_URL: ${{ secrets.DB_URL }}
