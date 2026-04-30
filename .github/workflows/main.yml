@@ -38,14 +38,13 @@ jobs:
 
       - name: Dar permissão ao mvnw
         run: chmod +x ./mvnw
-        working-directory: ./Projeto_ocorrencias_API
 
       - name: Executar Testes JUnit
         env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
-          PORTA: ${{ secrets.PORTA }}
+          DB_URL: jdbc:postgresql://localhost:5432/test
+          DB_USER: test
+          DB_PASS: test
+          PORTA: 8080
           TOKEN_WHATSAPP: ${{ secrets.TOKEN_WHATSAPP }}
           ID_CONTA: ${{ secrets.ID_CONTA }}
           ID_CANAL: ${{ secrets.ID_CANAL }}
@@ -59,7 +58,7 @@ jobs:
 
     environment:
       name: production
-      url: https://projeto-ocorrencias-ssw.onrender.com # 👈 troca pela URL real
+      url: https://projeto-ocorrencias-ssw.onrender.com
 
     steps:
       - name: Acionar deploy no Render
