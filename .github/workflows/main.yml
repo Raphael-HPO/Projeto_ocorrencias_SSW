@@ -1,12 +1,13 @@
-name: CI/CD no Meu Computador
+name: CI/CD
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  deploy-local:
-    runs-on: self-hosted
+  testes:
+    name: Testes
+    runs-on: ubuntu-latest
 
     defaults:
       run:
@@ -23,7 +24,6 @@ jobs:
           distribution: "temurin"
 
       - name: Executar Testes JUnit
-        shell: powershell
         env:
           DB_URL: ${{ secrets.DB_URL }}
           DB_USER: ${{ secrets.DB_USER }}
@@ -35,11 +35,16 @@ jobs:
           ID_FLOW_RESPOSTA: ${{ secrets.ID_FLOW_RESPOSTA }}
         run: ./mvnw test
 
-      - name: Build e Deploy no Docker
-        shell: powershell
-        env:
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASS: ${{ secrets.DB_PASS }}
-          PORTA: ${{ secrets.PORTA }}
-        run: docker-compose up -d --build
+  deploy:
+    name: Deploy no Render
+    needs: testes
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+      url: https://projeto-ocorrencias-ssw.onrender.com # 👈 troca pela URL real
+
+    steps:
+      - name: Acionar deploy no Render
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
