@@ -23,5 +23,4 @@ public class Ocorrencia {
     @Enumerated(EnumType.STRING)
     @ColumnDefault("'Aguardando'")
     private Retorno retorno;
-
 }
