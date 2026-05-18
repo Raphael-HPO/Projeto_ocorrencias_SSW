@@ -72,7 +72,6 @@ public class OcorrenciaService {
          * //TODO: Implementar lógica para envio de mensagens dinâmicas, utilizando os
          * //dados por setor para enviar as mensagens de forma personalizada, utilizando
          * //os templates do WhatsApp Business API
-         * //TODO:
          * 
          * @param ocorrenciaDTO
          * @throws
@@ -87,8 +86,12 @@ public class OcorrenciaService {
                                                 ocorrenciaDTO.dsOcorrencia(),
                                                 ocorrenciaDTO.usuario().getFilial(),
                                                 ocorrenciaDTO.dataCriacao(),
-                                                ocorrenciaDTO.horaCriacao())), new MetadataDTO(ocorrenciaDTO.key())),
-                                new SessaoDTO(new ContextoDTO(ocorrenciaDTO.key())));
+                                                ocorrenciaDTO.horaCriacao())),
+                                                new MetadataDTO(
+                                                                ocorrenciaDTO.key())),
+                                new SessaoDTO(
+                                                new ContextoDTO(
+                                                                ocorrenciaDTO.key())));
                 client.envioMensagemWhatsApp(keyApi.getToken(), ocorrencia)
                                 .orElseThrow(() -> new MensagemWhatsappException(401, "Erro ao enviar Mensagem!"));
 
