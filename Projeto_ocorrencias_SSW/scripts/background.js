@@ -44,8 +44,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "getToAPI") {
         getRetorno(request.key, sendResponse);
         return true;
+    } else if (request.codOcorrencia) {
+        postToAPI();
+        return true;
     }
-    postToAPI();
 });
 /**
  * Solicitação de consulta no banco de dados para receber o status.

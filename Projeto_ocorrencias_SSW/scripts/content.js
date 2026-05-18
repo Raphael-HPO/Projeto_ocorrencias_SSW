@@ -11,12 +11,19 @@ const acoes = {
         service.spamStatus("pendente");
         console.log("KEY 81" + unicKey)
         sendBack(dadosOcorrencia);
+        console.log(dadosOcorrencia);
         return true;
 
     },
     77: () => {
-        console.log("ACAO 77");
-        sendBack(new ServicoDOM().buscarDadosOcorrencia(77).jsonDadosOcorrencia)
+        const service = new ServicoDOM();
+        const dadosOcorrencia = service.buscarDadosOcorrencia(77, 'DESCRICAO_OCORRENCIA_77').objDadosOcorrencia;
+        const unicKeyConcat = new String().concat([dadosOcorrencia.usuario.nome, dadosOcorrencia.usuario.filial, dadosOcorrencia.codCTRC, dadosOcorrencia.codOcorrencia, dadosOcorrencia.dataCriacao, dadosOcorrencia.horaCriacao]);
+        const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
+        service.spamStatus("pendente");
+        console.log("KEY 77" + unicKey)
+        sendBack(dadosOcorrencia);
+        return true;
     },
 };
 
@@ -45,7 +52,7 @@ class DadosOcorrencia {
 }
 
 /**
- * Classe de serviço para ações da aplicação 
+ * Classe de serviço para ações da aplicação
  * obs: Algumas ações ainda podem ser desaclopadas.
  */
 class ServicoDOM {
@@ -53,7 +60,7 @@ class ServicoDOM {
      * Faz a busca dos dados e inclui em seus respectivos atributos, criando assim o objeto completo.
      * @param {*} codOcorrencia Código da ocorrência analizada
      * @param {*} dsOcorrencia Descrição respectiva à ocorrência indicada
-     * @returns 
+     * @returns
      */
     buscarDadosOcorrencia(codOcorrencia, dsOcorrencia) {
         const dadosUsuario = document.querySelectorAll('#infodiv b')[1].textContent;
@@ -80,13 +87,13 @@ class ServicoDOM {
 
     /**
      * Realiza a busca da função correspondente ao número da ocorrência.
-     * @param {*} numeroOcorrencia 
-     * @param {*} acoes 
+     * @param {*} numeroOcorrencia
+     * @param {*} acoes
      */
-    acaoPorOcorrencia(numeroOcorrencia, acoes) {
+    async acaoPorOcorrencia(numeroOcorrencia, acoes) {
         const acao = acoes[parseInt(numeroOcorrencia)];
         if (typeof acao == 'function') {
-            acao();
+            await acao();
         }
     }
 
@@ -138,7 +145,7 @@ class ServicoDOM {
 
     /**
      * Função de chamada de API. Realiza a chamada do backgroud para fazer a ação de chamar a API e verificar a situação do pedido.
-     * @param {*} unicKey 
+     * @param {*} unicKey
      * @returns Resposta API
      */
 
@@ -188,34 +195,69 @@ class ServicoDOM {
      * Lógica de acionamento de "ação Por Ocorrência" e bloqueador do botão
      * @param {*} ação Ação que foi realizada pelo usuário.
      * */
-    liberacaoDeOcorrencia(acao) {
+    async liberacaoDeOcorrencia(acao) {
         const link = acao.target.closest("a");
-        let contador = 0;
         if (link && link.getAttribute("href") == "#" && acao.target.id == document.getElementById('9').id) {
-            if (contador < 1) {
-                contador += 1;
-                const inputAtual = document.getElementById('3').value.trim();
-                const periodoMes = new Date().getMonth();
-                console.log(periodoMes)
-                if (inputAtual) {
-                    this.acaoPorOcorrencia(inputAtual, acoes);
-                }
-                acao.preventDefault();
-                acao.stopImmediatePropagation();
-            } else {
-                //TODO: Aplicar função, caso o botão seja clicado várias vezes, mostrando mensagem.
-                acao.preventDefault();
-                acao.stopImmediatePropagation();
+            if (link.getAttribute('data-already-processed') === 'true') {
+                return;
             }
+
+            if (link.hasAttribute('data-processing') && link.getAttribute('data-processing') === 'true') {
+                acao.preventDefault();
+                acao.stopImmediatePropagation();
+                return false;
+            }
+
+            link.setAttribute('data-processing', 'true');
+
+            const inputAtual = document.getElementById('3').value.trim();
+            const descInput = document.getElementById('ocor_descr').value.trim();
+            if (inputAtual) {
+                await this.acaoPorOcorrencia(inputAtual, acoes);
+
+                if (descInput) {
+                    const dadosOcorrencia = this.buscarDadosOcorrencia(inputAtual, descInput).objDadosOcorrencia;
+                    const unicKeyConcat = `${dadosOcorrencia.usuario.nome}${dadosOcorrencia.usuario.filial}${dadosOcorrencia.codCTRC}${dadosOcorrencia.codOcorrencia}${dadosOcorrencia.dataCriacao}${dadosOcorrencia.horaCriacao}`;
+                    const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
+                    this.verificarRetornoApi(dadosOcorrencia, acao, unicKey);
+                }
+            }
+            acao.preventDefault();
+            acao.stopImmediatePropagation();
+        }
+    }
+
+    async verificarRetornoApi(dadosOcorrencia, acao, unicKey) {
+        if (unicKey.length >= 33 && dadosOcorrencia.horaCriacao) {
+            const verificarRetorno = setInterval(async () => {
+                const dadosRetorno = await this.getVerifique(unicKey);
+                if (dadosRetorno.retorno === "Sim") {
+                    clearInterval(verificarRetorno);
+                    document.getElementById("spamStatus").remove();
+                    this.spamStatus('autorizado');
+                    const botao = document.getElementById('9');
+                    botao.setAttribute('data-already-processed', 'true');
+                    botao.removeAttribute('data-processing');
+                    botao.click();
+                } else if (dadosRetorno.retorno === "Nao") {
+                    clearInterval(verificarRetorno);
+                    document.getElementById("spamStatus").remove();
+                    this.spamStatus("negado");
+                } else {
+                    console.warn("dadosRetorno is undefined, null, or its 'retorno' property is not 'Sim'.", dadosRetorno);
+                    console.log(dadosOcorrencia)
+                    console.log(unicKey)
+                }
+            }, 10000);
         }
     }
 
     /**
      * Lógica para ativar e inativar a aplicação de acordo com o período do ano.
-     * 
+     *
      * @param {*} mesInicio Período de ínicio de funcionamento da extensão
      * @param {*} mesFim Período de fim de funcionamento da extensão
-     * @returns 
+     * @returns
      */
     periodoDeSobrecarga(mesInicio, mesFim) {
         const mesAtual = new Date().getMonth() + 1;
@@ -231,41 +273,16 @@ class ServicoDOM {
 //Controle de ativação da extensão!
 const statusExtensao = true;
 async function main() {
-    const aButton = document.getElementById('9');
     const input = document.getElementById('3');
+    const descInput = document.getElementById('ocor_descr');
     const service = new ServicoDOM();
     //Condição que inclui o período para inserir as travas
     if ((input && statusExtensao) && (service.periodoDeSobrecarga(1, 5) || service.periodoDeSobrecarga(10, 12))) {
-        /*A partir do input do usuário, será criada uma lista com todos os códigos e suas respectivas descrições.
-        Por enquanto esse dados está estático*/
-        /*Essa função irá criar os objetos necessário e enviar a mensagem para a API onde será enviado a mensagem do Whatsapp
-        e armazenado no banco de dados.*/
-        const dadosOcorrencia = service.buscarDadosOcorrencia(81, 'CHEGADA NA PORTARIA DO DESTINATARIO').objDadosOcorrencia;
-        //Criação de Chave única (pode ser alterada se necessário).
-        const unicKeyConcat = `${dadosOcorrencia.usuario.nome}${dadosOcorrencia.usuario.filial}${dadosOcorrencia.codCTRC}${dadosOcorrencia.codOcorrencia}${dadosOcorrencia.dataCriacao}${dadosOcorrencia.horaCriacao}`
-        const unicKey = unicKeyConcat.replaceAll("-", "").replace(/[,.:\-/]/g, '');
-        //Inclusão de "Vigia" e respectiva ação no botão de envio de solicitação.
+        //1° ação: Capturar Numero da ocorrência e a Descrição da ocorrência;
+        //2° ação: Bloquear o botão de envio de ocorrência e acionar a função de envio de dados para a API;
+        //3° ação: Aguardar o retorno da API para liberar ou não o envio da ocorrência.
         const acaoClick = (acao) => service.liberacaoDeOcorrencia(acao);
         document.addEventListener('click', acaoClick, true);
-        //Ações realizada de acordo com o retorno da API que verifica o status da resposta do whatsapp no banco de dados.
-        if (unicKey.length >= 22 && dadosOcorrencia.horaCriacao) {
-            const verificarRetorno = setInterval(async () => {
-                const dadosRetorno = await service.getVerifique(unicKey);
-                if (dadosRetorno.retorno === "Sim") {
-                    clearInterval(verificarRetorno);
-                    document.getElementById("spamStatus").remove();
-                    service.spamStatus('autorizado');
-                    document.removeEventListener('click', acaoClick, true);
-                    document.getElementById('9').click();
-                } else if (dadosRetorno.retorno === "Nao") {
-                    clearInterval(verificarRetorno);
-                    document.getElementById("spamStatus").remove();
-                    service.spamStatus("negado");
-                } else {
-                    console.warn("dadosRetorno is undefined, null, or its 'retorno' property is not 'Sim'.", dadosRetorno);
-                }
-            }, 10000);
-        }
         return true;
     }
     return false;
@@ -281,7 +298,7 @@ const verificarExistencia = setInterval(() => {
 
 /**
  * Inclusão de "Vigia" para verificar a existência do botão e incluir a função de bloqueio e ação do mesmo.
- * 
+ *
  */
 function armarBotao() {
     const botao = document.getElementById('9');
